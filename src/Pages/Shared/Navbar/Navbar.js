@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Fluoride from "../../../assets/images/fluoride.png";
 
 const Navbar = () => {
   const menuItems = (
@@ -50,7 +51,9 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost normal-case text-xl">
+          {" "}
           Dentist
+          {/* Dentist <img className="w-1/2" src={Fluoride} alt="" /> */}
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
