@@ -4,6 +4,16 @@ import React from "react";
 const BookingModal = ({ treatment, selectedDate }) => {
   const { name, slots } = treatment;
   const date = format(selectedDate, "PP");
+
+  const handleBooking = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const slot = form.slot.value;
+    const name = form.name.value;
+    const email = form.email.value;
+    const phone = form.phone.value;
+    console.log("booking", date, slot, name, email, phone);
+  };
   return (
     <>
       <input type="checkbox" id="booking-modal" className="modal-toggle" />
@@ -16,25 +26,36 @@ const BookingModal = ({ treatment, selectedDate }) => {
             ✕
           </label>
           <h3 className="text-lg font-bold">{name}</h3>
-          <form className="grid grid-cols-1 gap-3 mt-10">
+          <form
+            onSubmit={handleBooking}
+            className="grid grid-cols-1 gap-3 mt-10"
+          >
             <input
               type="text"
               value={date}
               className="input w-full input-bordered"
             />
-            <select className="select select-bordered w-full ">
+            <select name="slot" className="select select-bordered w-full ">
               {slots.map((slot) => (
                 <option value={slot}>{slot}</option>
               ))}
             </select>
             <input
+              name="name"
               type="text"
-              placeholder="Type here"
+              placeholder="Your Name"
               className="input w-full input-bordered "
             />
             <input
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              className="input w-full input-bordered"
+            />
+            <input
+              name="phone"
               type="text"
-              placeholder="Type here"
+              placeholder="Phone"
               className="input w-full input-bordered"
             />
             <br />
