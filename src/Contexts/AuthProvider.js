@@ -5,6 +5,8 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
 } from "firebase/auth";
 
 export const authContext = createContext();
@@ -19,6 +21,12 @@ const AuthProvider = ({ children }) => {
   const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
+  const updateUser = (userInfo) => {
+    return updateProfile(auth, userInfo);
+  };
+  const logOut = () => {
+    return signOut(auth);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
@@ -26,7 +34,7 @@ const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
-  const authInfo = { createUser, signIn, user };
+  const authInfo = { createUser, signIn, user, updateUser, logOut };
   return (
     <authContext.Provider value={authInfo}>{children}</authContext.Provider>
   );
@@ -34,17 +42,14 @@ const AuthProvider = ({ children }) => {
 
 export default AuthProvider;
 
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+// import { getAuth, updateProfile } from "firebase/auth";
 // const auth = getAuth();
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     const uid = user.uid;
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//   }
+// updateProfile(auth.currentUser, {
+//   displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg"
+// }).then(() => {
+//   // Profile updated!
+//   // ...
+// }).catch((error) => {
+//   // An error occurred
+//   // ...
 // });
