@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { authContext } from "../../Contexts/AuthProvider";
 
 const Login = () => {
   const {
@@ -8,9 +9,22 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const { signIn } = useContext(authContext);
+  const [loginError, setLoginError] = useState("");
 
   const handleLogin = (data) => {
     console.log(data);
+    setLoginError("");
+    console.log(errors);
+    signIn(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setLoginError(error.message);
+      });
   };
 
   return (
@@ -64,6 +78,7 @@ const Login = () => {
             type="submit"
             value="Login"
           />
+          {loginError && <p className="text-red-600">{loginError}</p>}
         </form>
         <p>
           New to Dentist?{" "}

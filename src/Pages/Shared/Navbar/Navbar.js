@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Fluoride from "../../../assets/images/fluoride.png";
+import { authContext } from "../../../Contexts/AuthProvider";
 
 const Navbar = () => {
+  const { user } = useContext(authContext);
+
   const menuItems = (
     <React.Fragment>
       <li>
@@ -17,10 +19,15 @@ const Navbar = () => {
       <li>
         <Link to="/reviews">Reviews</Link>
       </li>
-
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
+      {user?.uid ? (
+        <li>
+          <Link to="/">Log Out</Link>
+        </li>
+      ) : (
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+      )}
     </React.Fragment>
   );
   return (
