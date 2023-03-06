@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
   };
   const updateUser = (userInfo) => {
     setLoading(true);
-    return updateProfile(auth, userInfo);
+    return updateProfile(auth.currentUser, userInfo);
   };
   const logOut = () => {
     setLoading(true);
@@ -46,15 +46,3 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
-
-// import { getAuth, updateProfile } from "firebase/auth";
-// const auth = getAuth();
-// updateProfile(auth.currentUser, {
-//   displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg"
-// }).then(() => {
-//   // Profile updated!
-//   // ...
-// }).catch((error) => {
-//   // An error occurred
-//   // ...
-// });
