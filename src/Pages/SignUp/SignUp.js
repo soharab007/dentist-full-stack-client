@@ -3,16 +3,24 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "../../Contexts/AuthProvider";
+import useToken from "../../Hooks/useToken";
 
 const SignUp = () => {
   const { createUser, updateUser } = useContext(authContext);
   const [signUpError, setSignUpError] = useState("");
+  const [createdUserEmail, setCreatedUserEmail] = useState("");
+  const [token] = useToken(createdUserEmail);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+
+  if (token) {
+    navigate("/");
+  }
+
   const handleSignUp = (data) => {
     setSignUpError("");
     createUser(data.email, data.password)
@@ -24,6 +32,7 @@ const SignUp = () => {
 
         updateUser(userInfo)
           .then(() => {
+            saveUserToDatabase(data.name, data.email);
             navigate("/");
           })
           .catch((err) => console.log(err));
@@ -31,6 +40,20 @@ const SignUp = () => {
       .catch((error) => {
         console.error(error);
         setSignUpError(error.message);
+      });
+  };
+  const saveUserToDatabase = (name, email) => {
+    const user = { name, email };
+    fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCreatedUserEmail(email);
       });
   };
   return (
